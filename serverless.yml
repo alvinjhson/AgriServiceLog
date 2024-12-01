@@ -3,14 +3,48 @@ org: alvinjhson
 # "service" is the name of this project. This will also be added to your AWS resource names.
 service: AgriServiceLog
 
+
 provider:
   name: aws
   runtime: nodejs20.x
+  profile: test
+  region: eu-north-1
+  iam:
+    role: arn:aws:iam::225989356862:role/lectures-cloud 
 
-functions:
-  hello:
-    handler: handler.hello
+package:
+  individually: true  
+
+
+functions: 
+  signUp:
+    handler: functions/signUp/index.handler
     events:
       - httpApi:
-          path: /
-          method: get
+          path: "/auth/signup"
+          method: POST
+  logIn:
+    handler: functions/login/index.handler
+    events:
+      - httpApi:
+          path: "/auth/login"
+          method: POST
+
+          
+
+
+
+
+resources: 
+  Resources:
+    usersDb:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: account
+        AttributeDefinitions:
+          - AttributeName: username
+            AttributeType: S
+        KeySchema:
+          - AttributeName: username
+            KeyType: HASH
+        BillingMode: PAY_PER_REQUEST
