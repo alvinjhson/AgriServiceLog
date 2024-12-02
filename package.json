@@ -4,6 +4,9 @@
   "description": "<!-- title: 'AWS Simple HTTP Endpoint example in NodeJS' description: 'This template demonstrates how to make a simple HTTP API with Node.js running on AWS Lambda and API Gateway using the Serverless Framework.' layout: Doc framework: v4 platform: AWS language: nodeJS authorLink: 'https://github.com/serverless' authorName: 'Serverless, Inc.' authorAvatar: 'https://avatars1.githubusercontent.com/u/13742415?s=200&v=4' -->",
   "main": "handler.js",
   "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -14,9 +17,18 @@
   },
   "dependencies": {
     "@middy/core": "^5.5.1",
+    "@reduxjs/toolkit": "^2.4.0",
+    "@vitejs/plugin-react": "^4.3.4",
     "aws-sdk": "^2.1692.0",
     "bcryptjs": "^2.4.3",
+    "immer": "^10.1.1",
     "jsonwebtoken": "^9.0.2",
-    "nanoid": "^3.3.7"
+    "nanoid": "^3.3.7",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-redux": "^9.1.2",
+    "react-router-dom": "^7.0.1",
+    "redux": "^5.0.1",
+    "vite": "^6.0.1"
   }
 }
