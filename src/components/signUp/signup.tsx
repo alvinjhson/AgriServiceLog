@@ -29,7 +29,7 @@ const Signup = () => {
 
     try {
       const response = await axios.post(
-        "https://z09zwi52qg.execute-api.eu-north-1.amazonaws.com/auth/signup",
+        "https://z09zwi52qg.execute-api.eu-north-1.amazonaws.com/dev/auth/signup",
         formData
       );
       setResponseMessage("Account created successfully!");

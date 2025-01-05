@@ -9,6 +9,7 @@ provider:
   runtime: nodejs20.x
   profile: test
   region: eu-north-1
+  stage: ${opt:stage, 'dev'}
   iam:
     role: arn:aws:iam::225989356862:role/lectures-cloud 
 
