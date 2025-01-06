@@ -16,9 +16,9 @@ export function sendResponse(
       statusCode: code,
       headers: {
         "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "http://localhost:5173", // Allow all origins for development; replace with your frontend URL in production
-        "Access-Control-Allow-Methods": "POST, OPTIONS", // Allow POST and OPTIONS methods
-        "Access-Control-Allow-Headers": "Content-Type", // Allow Content-Type header
+        "Access-Control-Allow-Origin": "http://localhost:5173", 
+        "Access-Control-Allow-Methods": "POST, OPTIONS", 
+        "Access-Control-Allow-Headers": "Content-Type", 
       },
       body: JSON.stringify({
         ...response,
