@@ -5,13 +5,13 @@ import AWS from "aws-sdk";
 
 const db = new AWS.DynamoDB.DocumentClient();
 
-
 interface CreateAccountInput {
   username: string;
   hashedPassword: string;
   userId: string;
   firstname: string;
   lastname: string;
+  email: string;
 }
 
 interface CreateAccountResult {
@@ -26,13 +26,13 @@ interface SignupResult {
   userId?: string;
 }
 
-
 async function createAccount({
   username,
   hashedPassword,
   userId,
   firstname,
   lastname,
+  email,
 }: CreateAccountInput): Promise<CreateAccountResult> {
   try {
     await db
@@ -43,6 +43,7 @@ async function createAccount({
           password: hashedPassword,
           firstname,
           lastname,
+          email, 
           userId,
         },
       })
@@ -55,12 +56,12 @@ async function createAccount({
   }
 }
 
-
 async function signup(
   username: string,
   password: string,
   firstname: string,
-  lastname: string
+  lastname: string,
+  email: string
 ): Promise<SignupResult> {
   const hashedPassword = await bcrypt.hash(password, 10);
   const userId = nanoid();
@@ -71,21 +72,24 @@ async function signup(
     userId,
     firstname,
     lastname,
+    email, 
   });
 
   return result;
 }
 
-
 export const handler = async (event: { body: string }) => {
   try {
-    const { username, password, firstname, lastname } = JSON.parse(event.body);
+    const { username, password, firstname, lastname, email } = JSON.parse(
+      event.body
+    );
 
-    if (!username || !password || !firstname || !lastname) {
+   
+    if (!username || !password || !firstname || !lastname || !email) {
       return sendResponse(400, { success: false }, "All fields are required");
     }
 
-    const result = await signup(username, password, firstname, lastname);
+    const result = await signup(username, password, firstname, lastname, email);
 
     if (result.success) {
       return sendResponse(200, result, "Account Created");
