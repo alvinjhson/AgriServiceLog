@@ -25,7 +25,7 @@ async function getUserByUsernameOrEmail(identifier: string): Promise<User | fals
       .get({
         TableName: "agriaccount",
         Key: {
-          username: identifier,
+          email: identifier,
         },
       })
       .promise();

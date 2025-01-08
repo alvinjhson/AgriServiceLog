@@ -1,7 +1,7 @@
 import AWS from "aws-sdk";
 import bcrypt from "bcryptjs";
 import { sendResponse } from "../../responses";
-import { validateResetToken } from "../../middleware/resetPassword"; // Assuming this is your reset token validation logic
+import { validateResetToken } from "../../middleware/resetPassword"; 
 
 const db = new AWS.DynamoDB.DocumentClient();
 
@@ -12,7 +12,7 @@ async function resetPassword(token, newPassword) {
       return { success: false, message: "Invalid or expired reset token." };
     }
   
-    const email = validation.user.email; // Now it's safe to access validation.user.email
+    const email = validation.user.email; 
     const hashedPassword = await bcrypt.hash(newPassword, 10);
   
     try {
