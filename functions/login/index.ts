@@ -23,7 +23,7 @@ async function getUserByUsernameOrEmail(identifier: string): Promise<User | fals
     
     const userByUsername = await db
       .get({
-        TableName: "account",
+        TableName: "agriaccount",
         Key: {
           username: identifier,
         },
@@ -37,7 +37,7 @@ async function getUserByUsernameOrEmail(identifier: string): Promise<User | fals
    
     const userByEmail = await db
       .query({
-        TableName: "account",
+        TableName: "agriaccount",
         IndexName: "EmailIndex", 
         KeyConditionExpression: "email = :email",
         ExpressionAttributeValues: {

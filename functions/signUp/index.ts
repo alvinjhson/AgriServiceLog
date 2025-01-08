@@ -37,7 +37,7 @@ async function createAccount({
   try {
     await db
       .put({
-        TableName: "account",
+        TableName: "agriaccount",
         Item: {
           username,
           password: hashedPassword,

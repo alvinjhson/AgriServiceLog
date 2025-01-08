@@ -30,6 +30,18 @@ functions:
       - httpApi:
           path: "/auth/login"
           method: POST
+  requestResetPassword:
+    handler: functions/requestResetPassword/index.handler
+    events:
+      - httpApi:
+          path: "/auth/request-password-reset"
+          method: POST
+  resetPassword:
+    handler: functions/resetPassword/index.handler
+    events:
+      - httpApi:
+          path: "/auth/reset-password"
+          method: POST        
 
           
 
@@ -41,21 +53,26 @@ resources:
     usersDb:
       Type: AWS::DynamoDB::Table
       Properties:
-        TableName: account
+        TableName: agriaccount
         AttributeDefinitions:
-          - AttributeName: username
-            AttributeType: S
           - AttributeName: email
             AttributeType: S
+          - AttributeName: resetToken
+            AttributeType: S
         KeySchema:
-          - AttributeName: username
+          - AttributeName: email
             KeyType: HASH
         GlobalSecondaryIndexes:
-          - IndexName: EmailIndex
+          - IndexName: ResetTokenIndex
             KeySchema:
-              - AttributeName: email
+              - AttributeName: resetToken
                 KeyType: HASH
             Projection:
               ProjectionType: ALL
         BillingMode: PAY_PER_REQUEST
+
+
+
+
+
 
