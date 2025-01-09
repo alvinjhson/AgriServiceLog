@@ -28,7 +28,7 @@ async function forgotPassword(email) {
 
     await ses
       .sendEmail({
-        Source: "no-reply@yourdomain.com",
+        Source: "jhsonagri@gmail.com",
         Destination: { ToAddresses: [email] },
         Message: {
           Subject: { Data: "Password Reset Request" },
