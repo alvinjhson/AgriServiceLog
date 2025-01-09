@@ -18,60 +18,75 @@ interface LoginResponse {
   token?: string;
 }
 
-async function getUserByUsernameOrEmail(identifier: string): Promise<User | false> {
+async function getUserByEmail(email: string): Promise<User | false> {
   try {
-    
-    const userByUsername = await db
+    // Query the table by email (primary key)
+    const user = await db
       .get({
         TableName: "agriaccount",
         Key: {
-          email: identifier,
+          email, // Primary key
         },
       })
       .promise();
 
-    if (userByUsername.Item) {
-      return userByUsername.Item as User;
-    }
+    return user.Item ? (user.Item as User) : false;
+  } catch (error) {
+    console.error("Error fetching user by email:", error);
+    return false;
+  }
+}
 
-   
-    const userByEmail = await db
+async function getUserByResetToken(resetToken: string): Promise<User | false> {
+  try {
+    // Query the ResetTokenIndex (GSI)
+    const user = await db
       .query({
         TableName: "agriaccount",
-        IndexName: "EmailIndex", 
-        KeyConditionExpression: "email = :email",
+        IndexName: "ResetTokenIndex", // GSI
+        KeyConditionExpression: "resetToken = :resetToken",
         ExpressionAttributeValues: {
-          ":email": identifier,
+          ":resetToken": resetToken,
         },
       })
       .promise();
 
-    return userByEmail.Items && userByEmail.Items[0]
-      ? (userByEmail.Items[0] as User)
-      : false;
+    return user.Items && user.Items[0] ? (user.Items[0] as User) : false;
   } catch (error) {
-    console.error("Error fetching user:", error);
+    console.error("Error fetching user by reset token:", error);
     return false;
   }
 }
 
 async function login(identifier: string, password: string): Promise<LoginResponse> {
-  const user = await getUserByUsernameOrEmail(identifier);
+  let user: User | false;
+
+  // Determine if identifier is email
+  const isEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(identifier);
+
+  if (isEmail) {
+    // Fetch by email
+    user = await getUserByEmail(identifier);
+  } else {
+    console.error("Only email-based logins are supported.");
+    return { success: false, message: "Invalid login identifier. Use email." };
+  }
 
   if (!user) {
-    return { success: false, message: "Incorrect username, email, or password" };
+    return { success: false, message: "Incorrect email or password." };
   }
 
+  // Verify password
   const correctPassword = await bcrypt.compare(password, user.password);
-
   if (!correctPassword) {
-    return { success: false, message: "Incorrect username, email, or password" };
+    return { success: false, message: "Incorrect email or password." };
   }
 
+  // Generate JWT token
   const token = jwt.sign(
     { id: user.userId, username: user.username, email: user.email },
     process.env.JWT_SECRET || "aabbcc",
-    { expiresIn: 3600 }
+    { expiresIn: 3600 } // Token expires in 1 hour
   );
 
   return { success: true, token };
@@ -85,7 +100,7 @@ export const handler = async (event: { body: string }) => {
       return sendResponse(
         400,
         { success: false },
-        "Identifier (username or email) and password are required."
+        "Email and password are required."
       );
     }
 
@@ -94,10 +109,10 @@ export const handler = async (event: { body: string }) => {
     if (result.success) {
       return sendResponse(200, result, "Account logged in");
     } else {
-      return sendResponse(400, result, "Incorrect username, email, or password");
+      return sendResponse(400, result, "Incorrect email or password");
     }
   } catch (error) {
-    console.error("Error handling request:", error);
+    console.error("Error handling login request:", error);
     return sendResponse(500, { success: false }, "Internal server error");
   }
 };

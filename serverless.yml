@@ -41,7 +41,13 @@ functions:
     events:
       - httpApi:
           path: "/auth/reset-password"
-          method: POST        
+          method: POST
+  verifyEmail:
+    handler: functions/verifyEmail/index.handler
+    events:
+      - httpApi:
+          path: /auth/verify-email
+          method: GET                
 
           
 
