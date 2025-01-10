@@ -39,7 +39,7 @@ export const handler = async (event) => {
   try {
     const { token, newPassword } = JSON.parse(event.body);
 
-    // Validate input
+    
     if (!token || !newPassword) {
       return sendResponse(
         400,

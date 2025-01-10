@@ -68,7 +68,7 @@ async function sendVerificationEmail(email: string, verificationToken: string) {
 
   const verificationLink = `https://z09zwi52qg.execute-api.eu-north-1.amazonaws.com/auth/verify-email?token=${verificationToken}`;
   const params = {
-    Source: "jhsonagri@gmail.com", // Replace with a verified sender email
+    Source: "jhsonagri@gmail.com", 
     Destination: {
       ToAddresses: [email],
     },
@@ -100,8 +100,8 @@ async function signup(
 ): Promise<SignupResult> {
   const hashedPassword = await bcrypt.hash(password, 10);
   const userId = nanoid();
-  const verificationToken = nanoid(); // Generate unique token for verification
-  const verified = false; // New accounts are unverified by default
+  const verificationToken = nanoid(); 
+  const verified = false; 
 
   const accountResult = await createAccount({
     username,
