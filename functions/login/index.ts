@@ -20,12 +20,12 @@ interface LoginResponse {
 
 async function getUserByEmail(email: string): Promise<User | false> {
   try {
-    // Query the table by email (primary key)
+    
     const user = await db
       .get({
         TableName: "agriaccount",
         Key: {
-          email, // Primary key
+          email, 
         },
       })
       .promise();
@@ -39,11 +39,11 @@ async function getUserByEmail(email: string): Promise<User | false> {
 
 async function getUserByResetToken(resetToken: string): Promise<User | false> {
   try {
-    // Query the ResetTokenIndex (GSI)
+    
     const user = await db
       .query({
         TableName: "agriaccount",
-        IndexName: "ResetTokenIndex", // GSI
+        IndexName: "ResetTokenIndex", 
         KeyConditionExpression: "resetToken = :resetToken",
         ExpressionAttributeValues: {
           ":resetToken": resetToken,
@@ -61,11 +61,11 @@ async function getUserByResetToken(resetToken: string): Promise<User | false> {
 async function login(identifier: string, password: string): Promise<LoginResponse> {
   let user: User | false;
 
-  // Determine if identifier is email
+ 
   const isEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(identifier);
 
   if (isEmail) {
-    // Fetch by email
+   
     user = await getUserByEmail(identifier);
   } else {
     console.error("Only email-based logins are supported.");
@@ -76,17 +76,17 @@ async function login(identifier: string, password: string): Promise<LoginRespons
     return { success: false, message: "Incorrect email or password." };
   }
 
-  // Verify password
+ 
   const correctPassword = await bcrypt.compare(password, user.password);
   if (!correctPassword) {
     return { success: false, message: "Incorrect email or password." };
   }
 
-  // Generate JWT token
+ 
   const token = jwt.sign(
     { id: user.userId, username: user.username, email: user.email },
     process.env.JWT_SECRET || "aabbcc",
-    { expiresIn: 3600 } // Token expires in 1 hour
+    { expiresIn: 3600 } 
   );
 
   return { success: true, token };
