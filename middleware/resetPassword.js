@@ -11,7 +11,6 @@ export const validateResetToken = async (token) => {
 
     const secret = process.env.RESET_TOKEN_SECRET || "yourResetTokenSecret";
 
-    // Verify the JWT token
     const decoded = jwt.verify(token, secret);
     if (!decoded.email) {
       throw new Error("Invalid token payload.");
@@ -19,7 +18,6 @@ export const validateResetToken = async (token) => {
 
     const email = decoded.email;
 
-    // Retrieve the user from the database
     const result = await db.get({
       TableName: "agriaccount",
       Key: { email },
@@ -31,12 +29,12 @@ export const validateResetToken = async (token) => {
       throw new Error("User not found.");
     }
 
-    // Compare the token with the one stored in the database
+   
     if (user.resetToken !== token) {
       throw new Error("Token mismatch.");
     }
 
-    // Validate token expiration
+ 
     if (user.resetTokenExpiry < Date.now()) {
       throw new Error("Token has expired.");
     }
