@@ -3,7 +3,6 @@ org: alvinjhson
 # "service" is the name of this project. This will also be added to your AWS resource names.
 service: AgriServiceLog
 
-
 provider:
   name: aws
   runtime: nodejs20.x
@@ -12,10 +11,23 @@ provider:
   stage: ${opt:stage, 'dev'}
   iam:
     role: arn:aws:iam::225989356862:role/lectures-cloud 
+  httpApi:
+    cors:
+      allowedOrigins:
+        - http://localhost:5174 
+      allowedMethods:
+        - OPTIONS
+        - GET
+        - POST
+        - PUT
+        - DELETE
+      allowedHeaders:
+        - Content-Type
+        - Authorization
+      allowCredentials: false 
 
 package:
   individually: true  
-
 
 functions: 
   signUp:
@@ -46,13 +58,8 @@ functions:
     handler: functions/verifyEmail/index.handler
     events:
       - httpApi:
-          path: /auth/verify-email
+          path: "/auth/verify-email"
           method: GET                
-
-          
-
-
-
 
 resources: 
   Resources:
@@ -76,8 +83,6 @@ resources:
             Projection:
               ProjectionType: ALL
         BillingMode: PAY_PER_REQUEST
-
-
 
 
 
