@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUser, faLock } from "@fortawesome/free-solid-svg-icons";
 import "./signin.scss";
 
 const Signin = () => {
@@ -64,36 +66,58 @@ const Signin = () => {
   };
 
   return (
-    <div className="signin-container">
-      <h2>Sign In</h2>
-      <form className="signin-form" onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="identifier">Username or Email</label>
-          <input
-            id="identifier"
-            type="text"
-            name="identifier"
-            value={formData.identifier}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div>
-          <label htmlFor="password">Password</label>
-          <input
-            id="password"
-            type="password"
-            name="password"
-            value={formData.password}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <button type="submit" disabled={loading}>
-          {loading ? "Signing In..." : "Sign In"}
-        </button>
-      </form>
-      {responseMessage && <p className="response-message">{responseMessage}</p>}
+    <div className="login-page">
+      <div className="left-panel">
+        <h1>Welcome to Website</h1>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed diam
+          nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat
+          volutpat.
+        </p>
+      </div>
+      <div className="right-panel">
+        <h2>User Login</h2>
+        <form className="login-form" onSubmit={handleSubmit}>
+          <div className="input-group">
+            <label htmlFor="identifier">
+              <FontAwesomeIcon icon={faUser} className="icon" />
+            </label>
+            <input
+              id="identifier"
+              type="text"
+              name="identifier"
+              value={formData.identifier}
+              onChange={handleChange}
+              placeholder="Username or Email"
+              required
+            />
+          </div>
+          <div className="input-group">
+            <label htmlFor="password">
+              <FontAwesomeIcon icon={faLock} className="icon" />
+            </label>
+            <input
+              id="password"
+              type="password"
+              name="password"
+              value={formData.password}
+              onChange={handleChange}
+              placeholder="Password"
+              required
+            />
+          </div>
+          <div className="options">
+            <label>
+              <input type="checkbox" /> Remember
+            </label>
+            <a href="/forgot-password">Forgot password?</a>
+          </div>
+          <button type="submit" className="login-btn" disabled={loading}>
+            {loading ? "Signing In..." : "Login"}
+          </button>
+        </form>
+        {responseMessage && <p className="response-message">{responseMessage}</p>}
+      </div>
     </div>
   );
 };
