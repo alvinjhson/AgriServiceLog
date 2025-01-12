@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser, faLock } from "@fortawesome/free-solid-svg-icons";
+import { Link } from "react-router-dom";
 import "./signin.scss";
 
 const Signin = () => {
@@ -110,7 +111,8 @@ const Signin = () => {
             <label>
               <input type="checkbox" /> Remember
             </label>
-            <a href="/forgot-password">Forgot password?</a>
+            {/* Replace <a> tag with Link component */}
+            <Link to="/request-password-reset">Forgot password?</Link>
           </div>
           <button type="submit" className="login-btn" disabled={loading}>
             {loading ? "Signing In..." : "Login"}
