@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import "./requestPassword.scss";
 
 const RequestResetPassword = () => {
   const [email, setEmail] = useState("");
@@ -11,10 +12,19 @@ const RequestResetPassword = () => {
     setLoading(true);
 
     try {
+      console.log("Sending request to reset password with email:", email);
+
       const response = await axios.post(
         "https://z09zwi52qg.execute-api.eu-north-1.amazonaws.com/auth/request-password-reset",
-        { email }
+        { email },
+        {
+          headers: {
+            "Content-Type": "application/json", 
+          },
+        }
       );
+
+      console.log("Response from API:", response.data);
 
       if (response.data.success) {
         setResponseMessage("A reset link has been sent to your email.");
@@ -23,7 +33,9 @@ const RequestResetPassword = () => {
       }
     } catch (error) {
       console.error("Error requesting password reset:", error);
-      setResponseMessage("An error occurred. Please try again.");
+      setResponseMessage(
+        error.response?.data?.message || "An error occurred. Please try again."
+      );
     } finally {
       setLoading(false);
     }
@@ -52,5 +64,6 @@ const RequestResetPassword = () => {
 };
 
 export default RequestResetPassword;
+
 
 
