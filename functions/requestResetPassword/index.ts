@@ -37,7 +37,8 @@ async function forgotPassword(email) {
       .promise();
 
 
-    const resetLink = `https://z09zwi52qg.execute-api.eu-north-1.amazonaws.com/auth/reset-password?token=${encodeURIComponent(token)}`;
+      const resetLink = `http://localhost:5173/reset-password?token=${encodeURIComponent(token)}`;
+
 
     if (process.env.NODE_ENV !== "production") {
       console.log(`Mock email sent. Reset link: ${resetLink}`);

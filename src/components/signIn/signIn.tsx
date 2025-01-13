@@ -111,7 +111,6 @@ const Signin = () => {
             <label>
               <input type="checkbox" /> Remember
             </label>
-            {/* Replace <a> tag with Link component */}
             <Link to="/request-password-reset">Forgot password?</Link>
           </div>
           <button type="submit" className="login-btn" disabled={loading}>

@@ -12,7 +12,7 @@ const ResetPassword = () => {
   const [responseMessage, setResponseMessage] = useState("");
   const [loading, setLoading] = useState(false);
 
-  // Extract token from URL query parameters
+ 
   useEffect(() => {
     const queryParams = new URLSearchParams(window.location.search);
     const tokenFromURL = queryParams.get("token");
@@ -43,9 +43,9 @@ const ResetPassword = () => {
 
     try {
       const response = await axios.post(
-        "https://z09zwi52qg.execute-api.eu-north-1.amazonaws.com/auth/reset-password", // Your resetPassword endpoint
+        "https://z09zwi52qg.execute-api.eu-north-1.amazonaws.com/auth/reset-password", 
         {
-          token, // Token extracted from URL
+          token, 
           newPassword: formData.newPassword,
         }
       );

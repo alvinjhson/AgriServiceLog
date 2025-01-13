@@ -14,7 +14,7 @@ provider:
   httpApi:
     cors:
       allowedOrigins:
-        - http://localhost:5174 
+        - http://localhost:5173 
       allowedMethods:
         - OPTIONS
         - GET
@@ -24,7 +24,7 @@ provider:
       allowedHeaders:
         - Content-Type
         - Authorization
-      allowCredentials: false 
+      allowCredentials: false
 
 package:
   individually: true  
@@ -58,8 +58,8 @@ functions:
     handler: functions/verifyEmail/index.handler
     events:
       - httpApi:
-          path: "/auth/verify-email"
-          method: GET                
+          path: /auth/verify-email
+          method: GET
 
 resources: 
   Resources:
@@ -83,6 +83,7 @@ resources:
             Projection:
               ProjectionType: ALL
         BillingMode: PAY_PER_REQUEST
+
 
 
 
