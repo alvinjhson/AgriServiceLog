@@ -1,9 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser, faLock } from "@fortawesome/free-solid-svg-icons";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./signin.scss";
+
+
+import { UserContext } from "../../contexts/UserContext";
+
 
 const Signin = () => {
   const [formData, setFormData] = useState({
@@ -13,6 +17,11 @@ const Signin = () => {
 
   const [responseMessage, setResponseMessage] = useState("");
   const [loading, setLoading] = useState(false);
+
+  const { setUserEmail } = useContext(UserContext);
+
+
+  const navigate = useNavigate();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -27,7 +36,6 @@ const Signin = () => {
     setLoading(true);
     console.log("Form submission started...");
     console.log("Form data being submitted:", formData);
-    console.log("API Endpoint:", "https://z09zwi52qg.execute-api.eu-north-1.amazonaws.com/auth/login");
 
     try {
       const response = await axios.post(
@@ -42,6 +50,11 @@ const Signin = () => {
         console.log("API Response:", response.data);
         setResponseMessage("Successfully logged in!");
         console.log("Token:", response.data.token);
+        
+        
+        setUserEmail(response.data.email || formData.identifier);
+
+        navigate("/home");
       } else {
         console.error("Login failed:", response.data.message);
         setResponseMessage(response.data.message || "Login failed. Please try again.");
@@ -56,7 +69,6 @@ const Signin = () => {
       } else {
         console.error("Error setting up the request:", error.message);
       }
-
       setResponseMessage(
         error.response?.data?.message || "An error occurred. Please try again."
       );
@@ -76,6 +88,7 @@ const Signin = () => {
           volutpat.
         </p>
       </div>
+
       <div className="right-panel">
         <h2>User Login</h2>
         <form className="login-form" onSubmit={handleSubmit}>
@@ -124,4 +137,5 @@ const Signin = () => {
 };
 
 export default Signin;
+
 
