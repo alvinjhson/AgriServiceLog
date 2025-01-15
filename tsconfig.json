@@ -7,7 +7,7 @@
 
     /* Modules */
     "module": "ESNext",                                 /* Use ES module syntax. */
-    "moduleResolution": "node",                        /* Resolve modules using Node.js-style. */
+    "moduleResolution": "node",                         /* Resolve modules using Node.js-style. */
     "baseUrl": "./",                                    /* Specify the base directory for imports. */
     "paths": {                                          /* Define path aliases for cleaner imports. */
       "@/*": ["src/*"]
@@ -15,7 +15,7 @@
 
     /* Interop Constraints */
     "esModuleInterop": true,                            /* Enable compatibility with CommonJS modules. */
-    "allowSyntheticDefaultImports": true,              /* Allow default imports from modules with no default export. */
+    "allowSyntheticDefaultImports": true,               /* Allow default imports from modules with no default export. */
 
     /* Type Checking */
     "strict": true,                                     /* Enable strict type checking options. */
@@ -24,6 +24,8 @@
     /* Emit */
     "skipLibCheck": true                                /* Skip type checking for libraries to speed up builds. */
   },
+  "files": ["src/global.d.ts"],                         /* ADD THIS LINE */
   "include": ["src"],                                   /* Include all files in the `src` folder. */
-  "exclude": ["node_modules"],                         /* Exclude `node_modules` from compilation. */
+  "exclude": ["node_modules"]                           /* Exclude `node_modules` from compilation. */
 }
+
