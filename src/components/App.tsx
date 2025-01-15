@@ -4,15 +4,23 @@ import Signup from "./signUp/signup";
 import Signin from "./signIn/signIn";
 import ResetPassword from "./resetPassword/resetPassword";
 import RequestResetPassword from "./requestPassword/requestPassword";
+import HomePage from "./home/index";
+import { UserProvider } from "../contexts/UserContext";
 
 const App = () => {
   return (
-    <Routes>
-      <Route path="/" element={<Signin />} />
-      <Route path="/signup" element={<Signup />} />
-      <Route path="/request-password-reset" element={<RequestResetPassword />} />
-      <Route path="/reset-password" element={<ResetPassword />} />
-    </Routes>
+    <UserProvider>
+      <Routes>
+        <Route path="/" element={<Signin />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route
+          path="/request-password-reset"
+          element={<RequestResetPassword />}
+        />
+        <Route path="/reset-password" element={<ResetPassword />} />
+        <Route path="/home" element={<HomePage />} />
+      </Routes>
+    </UserProvider>
   );
 };
 
