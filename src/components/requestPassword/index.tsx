@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
-import "./requestPassword.scss";
+import "./style.scss";
 
 const RequestResetPassword = () => {
   const [email, setEmail] = useState("");
