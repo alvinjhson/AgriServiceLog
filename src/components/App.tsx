@@ -1,9 +1,9 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
-import Signup from "./signUp/signup";
-import Signin from "./signIn/signIn";
-import ResetPassword from "./resetPassword/resetPassword";
-import RequestResetPassword from "./requestPassword/requestPassword";
+import Signup from "./signUp/index";
+import Signin from "./signIn/index";
+import ResetPassword from "./resetPassword/index";
+import RequestResetPassword from "./requestPassword/index";
 import HomePage from "./home/index";
 import { UserProvider } from "../contexts/UserContext";
 
