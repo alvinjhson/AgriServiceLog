@@ -19,7 +19,7 @@ const validateToken = {
                 throw new Error("Token is missing or malformed");
             }
 
-            const data = jwt.verify(token, "aabbcc") as { id: string; username: string }; // Replace with your secret and adjust payload type accordingly
+            const data = jwt.verify(token, "aabbcc") as { id: string; username: string }; 
 
             request.event.user = {
                 id: data.id,
