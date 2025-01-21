@@ -1,16 +1,20 @@
-import React from "react";
-import { useContext } from "react";
-import { UserContext } from "../../contexts/UserContext"; 
+import React, { useState, useContext } from "react";
+import { UserContext } from "../../contexts/UserContext";
 import "./style.scss";
 import Logo from "../../asset/test.png";
-
+import TractorModal from "./addMachine/index"; // Import your modal component
 
 const HomePage: React.FC = () => {
-  
   const { userEmail } = useContext(UserContext);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false); // Add modal state
 
+  // Handle opening and closing the modal
   const handleAddMachine = () => {
-    console.log("Add Machine button clicked!");
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
   };
 
   return (
@@ -22,9 +26,7 @@ const HomePage: React.FC = () => {
         </div>
 
         <div className="user-info">
-          <div className="user-email">
-            {userEmail || "Guest"}
-          </div>
+          <div className="user-email">{userEmail || "Guest"}</div>
           <div className="user-icon">D</div>
         </div>
       </div>
@@ -44,8 +46,12 @@ const HomePage: React.FC = () => {
           <p>Your machine data goes here...</p>
         </div>
       </div>
+
+      {/* Render Modal */}
+      {isModalOpen && <TractorModal onClose={handleCloseModal} />}
     </div>
   );
 };
 
 export default HomePage;
+
