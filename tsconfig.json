@@ -25,7 +25,7 @@
     "skipLibCheck": true                                /* Skip type checking for libraries to speed up builds. */
   },
   "files": ["src/global.d.ts"],                         /* ADD THIS LINE */
-  "include": ["src"],                                   /* Include all files in the `src` folder. */
+  "include": ["src,vite-env.d.ts"],                                   /* Include all files in the `src` folder. */
   "exclude": ["node_modules"]                           /* Exclude `node_modules` from compilation. */
 }
 
