@@ -26,10 +26,11 @@ const Signup = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
+    const API_SIGNUP = import.meta.env.VITE_API_SIGNUP;
 
     try {
       const response = await axios.post(
-        "https://z09zwi52qg.execute-api.eu-north-1.amazonaws.com/dev/auth/signup",
+        `${API_SIGNUP}`,
         formData
       );
       setResponseMessage("Account created successfully!");
