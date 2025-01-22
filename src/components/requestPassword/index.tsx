@@ -10,12 +10,12 @@ const RequestResetPassword = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-
+    const API_REQUEST_PASSWORD_RESET = import.meta.env.VITE_API_REQUES_PASSWORD_RESET;
     try {
       console.log("Sending request to reset password with email:", email);
 
       const response = await axios.post(
-        "https://z09zwi52qg.execute-api.eu-north-1.amazonaws.com/auth/request-password-reset",
+        `${API_REQUEST_PASSWORD_RESET}`,
         { email },
         {
           headers: {
