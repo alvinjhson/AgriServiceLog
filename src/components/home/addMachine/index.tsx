@@ -18,14 +18,14 @@ const TractorModal: React.FC<TractorModalProps> = ({ onClose }) => {
   const [filteredTractors, setFilteredTractors] = useState<Tractor[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
-
+  const API_MACHINES = import.meta.env.VITE_API_MACHINES;
   // Fetch tractors from the API
   useEffect(() => {
     const fetchTractors = async () => {
       setLoading(true);
       setError("");
       try {
-        const response = await axios.get<Tractor[]>("https://j0bgnztiza.execute-api.eu-north-1.amazonaws.com/machinery");
+        const response = await axios.get<Tractor[]>(`${API_MACHINES}`);
         setTractors(response.data);
         setFilteredTractors(response.data);
       } catch (err) {
