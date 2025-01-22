@@ -2,6 +2,7 @@ import AWS from "aws-sdk";
 import { sendResponse } from "../../responses";
 import crypto from "crypto";
 import jwt from "jsonwebtoken";
+require('dotenv').config();
 
 const db = new AWS.DynamoDB.DocumentClient();
 const ses = new AWS.SES();
@@ -36,18 +37,20 @@ async function forgotPassword(email) {
       })
       .promise();
 
-
-      const resetLink = `http://localhost:5173/reset-password?token=${encodeURIComponent(token)}`;
+      const resetLink = `${process.env.FRONTEND_BASE_URL}/reset-password?token=${encodeURIComponent(token)}`;
 
 
     if (process.env.NODE_ENV !== "production") {
       console.log(`Mock email sent. Reset link: ${resetLink}`);
     }
-
+    const sourceEmail = process.env.SOURCE_EMAIL;
+    if (!sourceEmail) {
+      throw new Error("SOURCE_EMAIL is not defined in the environment variables");
+    }
    
     await ses
       .sendEmail({
-        Source: "jhsonagri@gmail.com",
+        Source: sourceEmail,
         Destination: { ToAddresses: [email] },
         Message: {
           Subject: { Data: "Password Reset Request" },

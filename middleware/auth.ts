@@ -1,5 +1,8 @@
 import jwt from "jsonwebtoken";
 import { APIGatewayEvent } from "aws-lambda";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 type Request = {
     event: APIGatewayEvent & {
@@ -9,7 +12,7 @@ type Request = {
         };
     };
 };
-
+const jwtSecret = process.env.JWT_SECRET || "default-secret";
 const validateToken = {
     before: async (request: Request): Promise<void> => {
         try {
@@ -19,7 +22,7 @@ const validateToken = {
                 throw new Error("Token is missing or malformed");
             }
 
-            const data = jwt.verify(token, "aabbcc") as { id: string; username: string }; 
+            const data = jwt.verify(token, jwtSecret) as { id: string; username: string };
 
             request.event.user = {
                 id: data.id,

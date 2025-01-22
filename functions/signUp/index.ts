@@ -2,6 +2,7 @@ import { nanoid } from "nanoid";
 import { sendResponse } from "../../responses";
 import bcrypt from "bcryptjs";
 import AWS from "aws-sdk";
+require('dotenv').config();
 
 const db = new AWS.DynamoDB.DocumentClient();
 
@@ -65,8 +66,8 @@ async function createAccount({
 async function sendVerificationEmail(email: string, verificationToken: string) {
   const AWS = require("aws-sdk");
   const ses = new AWS.SES();
-
-  const verificationLink = `https://z09zwi52qg.execute-api.eu-north-1.amazonaws.com/auth/verify-email?token=${verificationToken}`;
+  
+  const verificationLink = `${process.env.API_BASE_URL}/auth/verify-email?token=${verificationToken}`;
   const params = {
     Source: "jhsonagri@gmail.com", 
     Destination: {

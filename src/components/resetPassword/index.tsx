@@ -40,10 +40,10 @@ const ResetPassword = () => {
     }
 
     setLoading(true);
-
+    const API_RESETPASSWORD = import.meta.env.VITE_API_RESETPASSWORD;
     try {
       const response = await axios.post(
-        "https://z09zwi52qg.execute-api.eu-north-1.amazonaws.com/auth/reset-password", 
+        `${API_RESETPASSWORD}`, 
         {
           token, 
           newPassword: formData.newPassword,
