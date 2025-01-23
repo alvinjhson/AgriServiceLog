@@ -91,7 +91,7 @@ const Signin = () => {
           volutpat.
         </p>
       </div>
-
+  
       <div className="right-panel">
         <h2>User Login</h2>
         <form className="login-form" onSubmit={handleSubmit}>
@@ -124,9 +124,7 @@ const Signin = () => {
             />
           </div>
           <div className="options">
-            <label>
-              <input type="checkbox" /> Remember
-            </label>
+            <Link to="/signup">Sign Up</Link>
             <Link to="/request-password-reset">Forgot password?</Link>
           </div>
           <button type="submit" className="login-btn" disabled={loading}>
@@ -137,6 +135,7 @@ const Signin = () => {
       </div>
     </div>
   );
+  
 };
 
 export default Signin;
