@@ -2,7 +2,8 @@ import AWS from "aws-sdk";
 import { sendResponse } from "../../responses";
 import crypto from "crypto";
 import jwt from "jsonwebtoken";
-require('dotenv').config();
+import dotenv from "dotenv";
+dotenv.config();
 
 const db = new AWS.DynamoDB.DocumentClient();
 const ses = new AWS.SES();
@@ -22,6 +23,7 @@ async function forgotPassword(email) {
  
     const secret = process.env.RESET_TOKEN_SECRET || "yourResetTokenSecret";
     const token = jwt.sign({ email }, secret, { expiresIn: "1h" });
+  
 
  
     const expirationTime = Date.now() + 3600 * 1000; // 1 hour
@@ -36,21 +38,27 @@ async function forgotPassword(email) {
         },
       })
       .promise();
+      const FRONTEND_BASE_URL = process.env.VITE_FRONTEND_BASE_URL || "http://localhost:5173";
 
-      const resetLink = `${process.env.FRONTEND_BASE_URL}/reset-password?token=${encodeURIComponent(token)}`;
+  if (!FRONTEND_BASE_URL) {
+  throw new Error("FRONTEND_BASE_URL is not defined in the environment variables.");
+}
 
+      const resetLink = `${FRONTEND_BASE_URL}/reset-password?token=${encodeURIComponent(token)}`;
+        console.log("Reset Link:", resetLink);
 
     if (process.env.NODE_ENV !== "production") {
       console.log(`Mock email sent. Reset link: ${resetLink}`);
     }
-    const sourceEmail = process.env.SOURCE_EMAIL;
-    if (!sourceEmail) {
-      throw new Error("SOURCE_EMAIL is not defined in the environment variables");
-    }
+    // const sourceEmail = process.env.SOURCE_EMAIL;
+    // if (!sourceEmail) {
+    //   throw new Error("SOURCE_EMAIL is not defined in the environment variables");
+    // }
+    // const  sourceEmail = import.meta.env.VITE_SOURCE_EMAIL;
    
     await ses
       .sendEmail({
-        Source: sourceEmail,
+        Source: "jhsonagri@gmail.com",
         Destination: { ToAddresses: [email] },
         Message: {
           Subject: { Data: "Password Reset Request" },
