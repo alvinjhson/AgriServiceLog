@@ -10,11 +10,11 @@ provider:
   region: eu-north-1
   stage: ${opt:stage, 'dev'}
   iam:
-    role: arn:aws:iam::225989356862:role/lectures-cloud 
+    role: ${env:IAM_ROLE}
   httpApi:
     cors:
       allowedOrigins:
-        - http://localhost:5173 
+        - ${env:VITE_FRONTEND_BASE_URL}
       allowedMethods:
         - OPTIONS
         - GET
