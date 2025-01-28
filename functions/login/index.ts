@@ -16,6 +16,7 @@ interface LoginResponse {
   success: boolean;
   message?: string;
   token?: string;
+  userId?: string; 
 }
 
 async function getUserByEmail(email: string): Promise<User | false> {
@@ -61,11 +62,9 @@ async function getUserByResetToken(resetToken: string): Promise<User | false> {
 async function login(identifier: string, password: string): Promise<LoginResponse> {
   let user: User | false;
 
- 
   const isEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(identifier);
 
   if (isEmail) {
-   
     user = await getUserByEmail(identifier);
   } else {
     console.error("Only email-based logins are supported.");
@@ -76,21 +75,20 @@ async function login(identifier: string, password: string): Promise<LoginRespons
     return { success: false, message: "Incorrect email or password." };
   }
 
- 
   const correctPassword = await bcrypt.compare(password, user.password);
   if (!correctPassword) {
     return { success: false, message: "Incorrect email or password." };
   }
 
- 
   const token = jwt.sign(
     { id: user.userId, username: user.username, email: user.email },
     process.env.JWT_SECRET || "aabbcc",
     { expiresIn: 3600 } 
   );
 
-  return { success: true, token };
+  return { success: true, token, userId: user.userId }; 
 }
+
 
 export const handler = async (event: { body: string }) => {
   try {
@@ -116,3 +114,4 @@ export const handler = async (event: { body: string }) => {
     return sendResponse(500, { success: false }, "Internal server error");
   }
 };
+
