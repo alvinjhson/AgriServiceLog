@@ -9,23 +9,27 @@ interface Tractor {
 }
 
 interface TractorModalProps {
-  onClose: () => void; // Function to close the modal
+  onClose: () => void; 
+  onMachineAdded: (tractor: Tractor) => void; 
+  userId: string; 
 }
 
-const TractorModal: React.FC<TractorModalProps> = ({ onClose }) => {
+const TractorModal: React.FC<TractorModalProps> = ({ onClose, onMachineAdded, userId }) => {
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [tractors, setTractors] = useState<Tractor[]>([]);
   const [filteredTractors, setFilteredTractors] = useState<Tractor[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
   const API_MACHINES = import.meta.env.VITE_API_MACHINES;
-  // Fetch tractors from the API
+  const API_MACHINE_USER = import.meta.env.VITE_API_MACHINE_USER; 
+
+
   useEffect(() => {
     const fetchTractors = async () => {
       setLoading(true);
       setError("");
       try {
-        const response = await axios.get<Tractor[]>(`${API_MACHINES}`);
+        const response = await axios.get<Tractor[]>(API_MACHINES);
         setTractors(response.data);
         setFilteredTractors(response.data);
       } catch (err) {
@@ -38,13 +42,34 @@ const TractorModal: React.FC<TractorModalProps> = ({ onClose }) => {
     fetchTractors();
   }, []);
 
-  // Filter tractors based on search query
+  const timestamp = new Date().toISOString();
+ 
   useEffect(() => {
     const results = tractors.filter((tractor) =>
       tractor.name.toLowerCase().includes(searchQuery.toLowerCase())
     );
     setFilteredTractors(results);
   }, [searchQuery, tractors]);
+
+  const handleSelectTractor = async (tractor: Tractor) => {
+    try {
+      const response = await axios.post(API_MACHINE_USER, {
+        userId,
+        machineId: tractor.id.toString(),
+        timestamp, 
+      });
+  
+      if (response.status === 200) {
+        onMachineAdded(tractor); 
+      } else {
+        console.error("Failed to associate tractor with user");
+      }
+    } catch (error) {
+      console.error("Error associating tractor with user:", error);
+    } finally {
+      onClose(); 
+    }
+  };
 
   return (
     <div className="modal-backdrop">
@@ -64,7 +89,11 @@ const TractorModal: React.FC<TractorModalProps> = ({ onClose }) => {
         {!loading && !error && (
           <div className="tractor-list">
             {filteredTractors.map((tractor) => (
-              <div key={tractor.id} className="tractor-item">
+              <div
+                key={tractor.id}
+                className="tractor-item"
+                onClick={() => handleSelectTractor(tractor)} 
+              >
                 <p>{tractor.name}</p>
                 <small>{tractor.model}</small>
               </div>
