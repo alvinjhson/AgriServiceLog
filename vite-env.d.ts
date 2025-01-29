@@ -11,6 +11,7 @@ interface ImportMetaEnv {
     readonly VITE_FRONTEND_BASE_URL: string;
     readonly VITE_SOURCE_EMAIL: string;
     readonly VITE_JWT_SECRET: string;
+    readonly VITE_API_MACHINE_USER: string;
   }
   
   interface ImportMeta {
