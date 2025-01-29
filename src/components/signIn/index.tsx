@@ -19,7 +19,7 @@ const Signin = () => {
   const [responseMessage, setResponseMessage] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const { setUserEmail } = useContext(UserContext);
+  const { setUserEmail, setUserId } = useContext(UserContext);
 
 
   const navigate = useNavigate();
@@ -39,25 +39,27 @@ const Signin = () => {
     console.log("Form data being submitted:", formData);
   
     const API_LOGIN = import.meta.env.VITE_API_LOGIN;
-
+  
     try {
       const response = await axios.post(
-           `${API_LOGIN}`,
+        `${API_LOGIN}`,
         {
           identifier: formData.identifier,
           password: formData.password,
         }
       );
-
+  
       if (response.data.success) {
         console.log("API Response:", response.data);
         setResponseMessage("Successfully logged in!");
-        console.log("Token:", response.data.token);
+  
         
-        
-        setUserEmail(response.data.email || formData.identifier);
-
-        navigate("/home");
+        if (response.data.success) {
+          setUserEmail(response.data.email || formData.identifier);
+          setUserId(response.data.userId); 
+          navigate("/home");
+        }
+       
       } else {
         console.error("Login failed:", response.data.message);
         setResponseMessage(response.data.message || "Login failed. Please try again.");
