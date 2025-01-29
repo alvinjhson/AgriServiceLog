@@ -2,13 +2,19 @@ import React, { useState, useContext } from "react";
 import { UserContext } from "../../contexts/UserContext";
 import "./style.scss";
 import Logo from "../../asset/test.png";
-import TractorModal from "./addMachine/index"; // Import your modal component
+import TractorModal from "./addMachine/index";
+
+interface Machine {
+  id: number;
+  name: string;
+  model: string;
+}
 
 const HomePage: React.FC = () => {
-  const { userEmail } = useContext(UserContext);
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false); // Add modal state
+  const { userEmail, userId } = useContext(UserContext);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [userMachines, setUserMachines] = useState<Machine[]>([]);
 
-  // Handle opening and closing the modal
   const handleAddMachine = () => {
     setIsModalOpen(true);
   };
@@ -16,6 +22,15 @@ const HomePage: React.FC = () => {
   const handleCloseModal = () => {
     setIsModalOpen(false);
   };
+
+  const handleMachineAdded = (machine: Machine) => {
+    setUserMachines((prevMachines) => [...prevMachines, machine]);
+    setIsModalOpen(false);
+  };
+  if (!userId) {
+    return <p>You must be logged in to add machines.</p>; 
+  }
+
 
   return (
     <div className="home-page">
@@ -43,15 +58,30 @@ const HomePage: React.FC = () => {
         </div>
 
         <div className="machine-list-content">
-          <p>Your machine data goes here...</p>
+          {userMachines.length > 0 ? (
+            <ul>
+              {userMachines.map((machine) => (
+                <li key={machine.id}>
+                  {machine.name} - {machine.model}
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p>No machines added yet. Click "Add Machine" to get started!</p>
+          )}
         </div>
       </div>
+      
 
-      {/* Render Modal */}
-      {isModalOpen && <TractorModal onClose={handleCloseModal} />}
+      {isModalOpen && (
+        <TractorModal
+          onClose={handleCloseModal}
+          onMachineAdded={handleMachineAdded}
+          userId={userId} 
+        />
+      )}
     </div>
   );
 };
 
 export default HomePage;
-
