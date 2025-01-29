@@ -60,5 +60,27 @@
       }
     }
   }
+  .tractor-item {
+    padding: 10px;
+    margin: 5px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  
+    &:hover {
+      background-color: #f0f0f0;
+    }
+  
+    p {
+      margin: 0;
+      font-weight: bold;
+    }
+  
+    small {
+      color: #666;
+    }
+  }
+  
   
   
