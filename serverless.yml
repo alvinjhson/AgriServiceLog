@@ -60,6 +60,12 @@ functions:
       - httpApi:
           path: /auth/verify-email
           method: GET
+  postMachineUser:
+    handler: functions/postMachineUser/index.handler
+    events:
+      - httpApi:
+          path: /machine-user
+          method: POST        
 
 resources: 
   Resources:
@@ -83,6 +89,22 @@ resources:
             Projection:
               ProjectionType: ALL
         BillingMode: PAY_PER_REQUEST
+    userMachinesDb:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${env:AWS_USER_MACHINES_TABLE}
+        AttributeDefinitions:
+          - AttributeName: userId
+            AttributeType: S
+          - AttributeName: machineId
+            AttributeType: S
+        KeySchema:
+          - AttributeName: userId
+            KeyType: HASH
+          - AttributeName: machineId
+            KeyType: RANGE
+        BillingMode: PAY_PER_REQUEST
+    
 
 
 
