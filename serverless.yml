@@ -11,6 +11,8 @@ provider:
   stage: ${opt:stage, 'dev'}
   iam:
     role: ${env:IAM_ROLE}
+  environment:
+    AWS_USER_MACHINES_TABLE: ${env:AWS_USER_MACHINES_TABLE} 
   httpApi:
     cors:
       allowedOrigins:
@@ -66,7 +68,13 @@ functions:
       - httpApi:
           path: /machine-user
           method: POST        
-
+  getMachineUser:
+    handler: functions/getMachineUser/index.handler
+    events:
+      - httpApi:
+          path: /get-machine
+          method: GET    
+          
 resources: 
   Resources:
     usersDb:

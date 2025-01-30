@@ -1,4 +1,4 @@
-import React, { createContext, useState, ReactNode } from "react";
+import React, { createContext, useState, useEffect, ReactNode } from "react";
 
 interface UserContextProps {
   userEmail: string | null;
@@ -15,8 +15,29 @@ export const UserContext = createContext<UserContextProps>({
 });
 
 export const UserProvider = ({ children }: { children: ReactNode }) => {
-  const [userEmail, setUserEmail] = useState<string | null>(null);
-  const [userId, setUserId] = useState<string | null>(null);
+  const [userEmail, setUserEmail] = useState<string | null>(() => {
+    return localStorage.getItem("userEmail") || null;
+  });
+
+  const [userId, setUserId] = useState<string | null>(() => {
+    return localStorage.getItem("userId") || null;
+  });
+
+  useEffect(() => {
+    if (userEmail) {
+      localStorage.setItem("userEmail", userEmail);
+    } else {
+      localStorage.removeItem("userEmail");
+    }
+  }, [userEmail]);
+
+  useEffect(() => {
+    if (userId) {
+      localStorage.setItem("userId", userId);
+    } else {
+      localStorage.removeItem("userId");
+    }
+  }, [userId]);
 
   return (
     <UserContext.Provider value={{ userEmail, userId, setUserEmail, setUserId }}>
@@ -24,3 +45,4 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     </UserContext.Provider>
   );
 };
+
