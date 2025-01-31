@@ -4,7 +4,7 @@ const db = new AWS.DynamoDB.DocumentClient();
 
 export const handler = async (event) => {
   try {
-    const { userId, machineId } = JSON.parse(event.body);
+    const { userId, machineId, model } = JSON.parse(event.body);
 
     if (!userId || !machineId) {
       return {
@@ -18,7 +18,7 @@ export const handler = async (event) => {
     await db
       .put({
         TableName: "userMachines",
-        Item: { userId, machineId, timestamp },
+        Item: { userId, machineId, model, timestamp },
       })
       .promise();
 
@@ -27,7 +27,7 @@ export const handler = async (event) => {
       body: JSON.stringify({
         success: true,
         message: "Machine added successfully.",
-        data: { userId, machineId, timestamp },
+        data: { userId, machineId, model , timestamp },
       }),
     };
   } catch (error) {
