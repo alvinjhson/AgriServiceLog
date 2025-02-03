@@ -56,7 +56,8 @@ const TractorModal: React.FC<TractorModalProps> = ({ onClose, onMachineAdded, us
       const response = await axios.post(API_MACHINE_USER, {
         userId,
         machineId: tractor.id.toString(),
-        timestamp, 
+        timestamp,
+        model : tractor.name 
       });
   
       if (response.status === 200) {
