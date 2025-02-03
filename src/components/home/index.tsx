@@ -96,7 +96,7 @@ const HomePage: React.FC = () => {
             <div className="machine-cards">
               {userMachines.map((machine) => (
                 <div key={machine.id} className="machine-card">
-                  <h3>{machine.name}</h3>
+                  <h3>{machine.model}</h3>
                   <p>Last service: 14/05/2025</p>
                   <p>Upcoming service: 14/10/2025</p>
                   <p>Latest hours done: 5500 hours</p>
