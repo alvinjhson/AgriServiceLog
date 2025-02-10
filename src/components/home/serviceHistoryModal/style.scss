@@ -1,0 +1,64 @@
+.machine-cards {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+  
+  .machine-card {
+    background: #f8f8f8;
+    padding: 15px;
+    border-radius: 10px;
+    width: 250px;
+    text-align: center;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+  
+    &:hover {
+      transform: scale(1.02);
+      transition: 0.2s ease-in-out;
+    }
+  }
+  
+  .modal {
+    background: #f8f8f8;
+    padding: 20px;
+    border-radius: 10px;
+    width: 350px;
+    text-align: center;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+  
+    .service-history {
+      width: 100%;
+      margin-top: 15px;
+      border-collapse: collapse;
+  
+      th {
+        background: #ddd;
+        padding: 8px;
+      }
+  
+      td {
+        padding: 8px;
+        border-bottom: 1px solid #ddd;
+      }
+  
+      .fa-wrench {
+        color: #666;
+      }
+    }
+  
+    .close-btn {
+      margin-top: 10px;
+      padding: 8px;
+      border: none;
+      background: #c0392b;
+      color: white;
+      border-radius: 5px;
+      cursor: pointer;
+  
+      &:hover {
+        background: #a8322b;
+      }
+    }
+  }
+  
