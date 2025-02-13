@@ -1,66 +1,65 @@
-import React, { useState, useEffect, useContext } from "react";
-import axios from "axios";
+import React, { useState, useContext } from "react";
 import { UserContext } from "../../contexts/UserContext";
 import "./style.scss";
 import Logo from "../../asset/test.png";
-import TractorModal from "./addMachine/index";
+import TractorModal from "./serviceHistoryModal";
+
+interface ServiceHistory {
+  date: string;
+  hours: number;
+}
 
 interface Machine {
   id: number;
   name: string;
   model: string;
+  serialNumber: string;
+  lastService: string;
+  nextService: string;
+  latestHours: number;
+  serviceHistory: ServiceHistory[];
 }
 
 const HomePage: React.FC = () => {
-  const { userEmail, userId } = useContext(UserContext);
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const [userMachines, setUserMachines] = useState<Machine[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string>("");
+  const { userEmail } = useContext(UserContext);
+  const [selectedTractor, setSelectedTractor] = useState<Machine | null>(null);
 
-  const API_GET_USER_MACHINES = import.meta.env.VITE_API_GET_USER_MACHINES; 
+  const mockTractors: Machine[] = [
+    {
+      id: 1,
+      name: "Deutz 6215P",
+      model: "6215P",
+      serialNumber: "14129310410231",
+      lastService: "14/05/2025",
+      nextService: "14/10/2025",
+      latestHours: 5500,
+      serviceHistory: [
+        { date: "14/05/2025", hours: 5500 },
+        { date: "14/05/2024", hours: 4500 },
+      ],
+    },
+    {
+      id: 2,
+      name: "Deutz 7250 TTV",
+      model: "7250 TTV",
+      serialNumber: "98371923847192",
+      lastService: "20/08/2024",
+      nextService: "20/02/2025",
+      latestHours: 6200,
+      serviceHistory: [
+        { date: "20/08/2024", hours: 6200 },
+        { date: "20/02/2024", hours: 5100 },
+      ],
+    },
+  ];
 
-  
-  useEffect(() => {
-    const fetchUserMachines = async () => {
-      if (!userId) return;
-
-      try {
-        setLoading(true);
-        setError("");
-        const response = await axios.get(`${API_GET_USER_MACHINES}?userId=${userId}`);
-        if (response.data.success) {
-          setUserMachines(response.data.machines);
-        } else {
-          setError("Failed to load machines");
-        }
-      } catch (error) {
-        console.error("Error fetching user machines:", error);
-        setError("Error fetching machines. Please try again.");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchUserMachines();
-  }, [userId]); 
-
-  const handleAddMachine = () => {
-    setIsModalOpen(true);
+  const handleOpenModal = (tractor: Machine) => {
+    setSelectedTractor(tractor);
   };
 
   const handleCloseModal = () => {
-    setIsModalOpen(false);
+    setSelectedTractor(null);
   };
-
-  const handleMachineAdded = (machine: Machine) => {
-    setUserMachines((prevMachines) => [...prevMachines, machine]);
-    setIsModalOpen(false);
-  };
-
-  if (!userId) {
-    return <p>Loading user data...</p>;
-  }
 
   return (
     <div className="home-page">
@@ -82,40 +81,23 @@ const HomePage: React.FC = () => {
 
         <div className="machine-list-header">
           <h2>Machine list</h2>
-          <button className="add-machine-btn" onClick={handleAddMachine}>
-            Add Machine
-          </button>
         </div>
 
         <div className="machine-list-content">
-          {loading ? (
-            <p>Loading machines...</p>
-          ) : error ? (
-            <p className="error-message">{error}</p>
-          ) : userMachines.length > 0 ? (
-            <div className="machine-cards">
-              {userMachines.map((machine) => (
-                <div key={machine.id} className="machine-card">
-                  <h3>{machine.model}</h3>
-                  <p>Last service: 14/05/2025</p>
-                  <p>Upcoming service: 14/10/2025</p>
-                  <p>Latest hours done: 5500 hours</p>
-                </div>
-              ))}
-            </div>
-          ) : (
-            <p>No machines added yet. Click "Add Machine" to get started!</p>
-          )}
+          <div className="machine-cards">
+            {mockTractors.map((machine) => (
+              <div key={machine.id} className="machine-card" onClick={() => handleOpenModal(machine)}>
+                <h3>{machine.name}</h3>
+                <p>Last service: {machine.lastService}</p>
+                <p>Upcoming service: {machine.nextService}</p>
+                <p>Latest hours done: {machine.latestHours} hours</p>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
 
-      {isModalOpen && (
-        <TractorModal
-          onClose={handleCloseModal}
-          onMachineAdded={handleMachineAdded}
-          userId={userId}
-        />
-      )}
+      {selectedTractor && <TractorModal tractor={selectedTractor} onClose={handleCloseModal} />}
     </div>
   );
 };
