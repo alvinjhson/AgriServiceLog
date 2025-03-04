@@ -1,11 +1,20 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./style.scss";
+interface ServiceHistory {
+  date: string;
+  hours: number;
+}
 
 interface Tractor {
   id: number;
   name: string;
   model: string;
+  serialNumber: string;
+  lastService: string;
+  nextService: string;
+  latestHours: number;
+  serviceHistory: ServiceHistory[];
 }
 
 interface TractorModalProps {
