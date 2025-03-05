@@ -74,6 +74,13 @@ functions:
       - httpApi:
           path: /get-machine
           method: GET    
+  updateMachineService:
+    handler: functions/updateMachineService/index.handler
+    events:
+      - httpApi:
+          path: /update-machine
+          method: PUT
+         
           
 resources: 
   Resources:
