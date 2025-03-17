@@ -4,25 +4,52 @@ const db = new AWS.DynamoDB.DocumentClient();
 
 export const handler = async (event) => {
   try {
-    const { userId, userMachineId, lastService } = JSON.parse(event.body); 
 
+
+    if (!event.body) {
+      console.error(" Missing request body.");
+      return {
+        statusCode: 400,
+        body: JSON.stringify({ success: false, message: "Missing request body." }),
+      };
+    }
+
+  
+    let parsedBody;
+    try {
+      parsedBody = JSON.parse(event.body);
+    } catch (error) {
+      console.error("Error parsing JSON body:", error);
+      return {
+        statusCode: 400,
+        body: JSON.stringify({ success: false, message: "Invalid JSON format." }),
+      };
+    }
+
+    const { userId, userMachineId, lastService } = parsedBody;
+
+    
     if (!userId || !userMachineId || !lastService) {
+      console.error(" Missing required fields:", { userId, userMachineId, lastService });
       return {
         statusCode: 400,
         body: JSON.stringify({ success: false, message: "Missing required fields." }),
       };
     }
 
-    await db
-      .update({
-        TableName: "userMachines",
-        Key: { userMachineId }, 
-        UpdateExpression: "set lastService = :lastService",
-        ExpressionAttributeValues: {
-          ":lastService": lastService,
-        },
-      })
-      .promise();
+  
+
+    
+    const params = {
+      TableName: "userMachiness",
+      Key: { userId, userMachineId }, 
+      UpdateExpression: "SET lastService = :lastService",
+      ExpressionAttributeValues: { ":lastService": lastService },
+      ReturnValues: "UPDATED_NEW",
+    };
+
+    const result = await db.update(params).promise();
+
 
     return {
       statusCode: 200,
@@ -36,3 +63,4 @@ export const handler = async (event) => {
     };
   }
 };
+
