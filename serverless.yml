@@ -81,6 +81,7 @@ functions:
           path: /update-machine
           method: PUT
          
+         
           
 resources: 
   Resources:
@@ -111,12 +112,12 @@ resources:
         AttributeDefinitions:
           - AttributeName: userId
             AttributeType: S
-          - AttributeName: machineId
+          - AttributeName: userMachineId 
             AttributeType: S
         KeySchema:
           - AttributeName: userId
             KeyType: HASH
-          - AttributeName: machineId
+          - AttributeName: userMachineId 
             KeyType: RANGE
         BillingMode: PAY_PER_REQUEST
     
