@@ -60,5 +60,104 @@
         background: #a8322b;
       }
     }
+    .editable {
+        cursor: pointer;
+        text-decoration: underline;
+        color: blue;
+      }
+      .editable:hover {
+        color: darkblue;
+      }
+      
   }
+  .add-service-icon {
+    font-size: 20px;
+    color: green;
+    margin: 5px;
+  }
+  
+  .add-service-modal {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    margin: 10px;
+  }
+  
+  .add-service-modal input {
+    margin: 5px;
+    padding: 5px;
+    width: 80%;
+  }
+  
+  .add-service-modal button {
+    margin: 5px;
+    padding: 5px;
+  }
+  .add-btn {
+    margin: 10px 0;
+    background-color: #007bff;
+    color: white;
+    padding: 5px 10px;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .service-form {
+    background-color: #f4f4f4;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 5px;
+  }
+  
+  .entry-buttons {
+    margin-top: 10px;
+  }
+  
+  .save-btn, .cancel-btn {
+    margin: 5px;
+    padding: 8px 12px;
+    border: none;
+    color: white;
+    border-radius: 4px;
+  }
+  
+  .service-form {
+    padding: 10px;
+    margin: 10px 0;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+  }
+  
+  .checklist-item {
+    display: flex;
+    align-items: center;
+    margin: 5px 0;
+  }
+  
+  .checklist-item input[type="text"] {
+    margin-left: 10px;
+    flex: 1;
+  }
+  
+  .entry-buttons {
+    margin-top: 10px;
+  }
+  
+  .save-btn, .cancel-btn {
+    margin: 5px;
+    padding: 8px 12px;
+    border: none;
+    color: white;
+    border-radius: 4px;
+  }
+  
+  .save-btn {
+    background-color: #4caf50;
+  }
+  
+  .cancel-btn {
+    background-color: #f44336;
+  }
+  
   
